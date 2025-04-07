@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.endoftheyeargame"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.endoftheyeargame"
