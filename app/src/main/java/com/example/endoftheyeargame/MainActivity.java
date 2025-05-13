@@ -18,7 +18,9 @@ public class MainActivity extends AppCompatActivity {
 
     EditText name, password;
     Button btn;
-    String a, b, c, name1, name2, name3;
+    String a, b, c, name1, name2, name3, input, nameInput;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,33 +43,45 @@ public class MainActivity extends AppCompatActivity {
         name1 = "WalterWhite158";
         name2 = "SaulGoodman249";
         name3 = "JessePinkman259";
-        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
 
+        sharedPref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        editor = sharedPref.edit();
+        input = password.getText().toString();
+        nameInput = name.getText().toString();
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String input = password.getText().toString();
-                String nameInput = name.getText().toString();
-                if(input.isEmpty() && !nameInput.isEmpty()){
+                input = password.getText().toString();
+                nameInput = name.getText().toString();
+
+                if (input.equals("") && !nameInput.equals("")) {
                     Toast.makeText(MainActivity.this, "Password required", Toast.LENGTH_SHORT).show();
-                }
-                else if(nameInput.isEmpty() && !input.isEmpty()){
+                    return;
+                } else if (nameInput.equals("") && !input.equals("")) {
                     Toast.makeText(MainActivity.this, "Username required", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                    return;
+                } else if (input.equals("") && nameInput.equals("")) {
                     Toast.makeText(MainActivity.this, "No data was entered at all", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                if(!input.equals(a) && !nameInput.equals(name1) || !nameInput.equals(name2) && !input.equals(b) || !input.equals(c) && !nameInput.equals(name3)){
+
+                boolean valid =
+                        (nameInput.equals(name1) && input.equals(a)) ||
+                                (nameInput.equals(name2) && input.equals(b)) ||
+                                (nameInput.equals(name3) && input.equals(c));
+
+                if (!valid) {
                     Toast.makeText(MainActivity.this, "Incorrect password or username", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
+                    sharedPref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                    editor = sharedPref.edit();
+                    editor.putString("user", nameInput);
+                    editor.apply();
+
                     Intent i = new Intent(MainActivity.this, MainActivity2.class);
                     startActivity(i);
                 }
-                editor.putString("user", nameInput);
-                editor.apply();
             }
         });
     }
