@@ -1,8 +1,8 @@
 package com.example.endoftheyeargame;
 
 public class Question {
-    private final int leftValue;
-    private final int rightValue;
+    private int leftValue;
+    private int rightValue;
 
     //Constructor
     public Question(int lv, int rv) {
