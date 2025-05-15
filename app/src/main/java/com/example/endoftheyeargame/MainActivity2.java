@@ -18,6 +18,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.Executors;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -113,12 +114,28 @@ public class MainActivity2 extends AppCompatActivity {
         score.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScoreList scoreList = new ScoreList(sharedPref.getString("user",""), scoreCnt);
-                scoreListDAO.insert(scoreList);
-                Intent i = new Intent(MainActivity2.this, MainActivity3.class);
-                startActivity(i);
+                String user = sharedPref.getString("user", "");
+                ScoreList scoreList = new ScoreList(user, scoreCnt);
+
+                // Run DB insert in background
+                Executors.newSingleThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        scoreListDAO.insert(scoreList);
+
+                        // Navigate to next activity on UI thread
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent i = new Intent(MainActivity2.this, MainActivity3.class);
+                                startActivity(i);
+                            }
+                        });
+                    }
+                });
             }
         });
+
     }
 
     public static Question generateQuestion() {
