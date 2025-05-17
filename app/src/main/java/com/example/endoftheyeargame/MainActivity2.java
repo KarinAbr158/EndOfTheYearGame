@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 public class MainActivity2 extends AppCompatActivity {
 
     TextView tv, rightNum, leftNum;
-    Button bigger, smaller, equal, score;
+    Button biggerBtn, smallerBtn, equalBtn, scoreBtn;
     int scoreCnt;
     ScoreListDatabase database;
     ScoreListDAO scoreListDAO;
@@ -42,10 +42,10 @@ public class MainActivity2 extends AppCompatActivity {
         rightNum = findViewById(R.id.rightTV);
         leftNum = findViewById(R.id.leftTV);
         tv = findViewById(R.id.textView);
-        bigger = findViewById(R.id.greaterBtn);
-        smaller = findViewById(R.id.lessBtn);
-        equal = findViewById(R.id.equalBtn);
-        score = findViewById(R.id.scoreBtn);
+        biggerBtn = findViewById(R.id.greaterBtn);
+        smallerBtn = findViewById(R.id.lessBtn);
+        equalBtn = findViewById(R.id.equalBtn);
+        scoreBtn = findViewById(R.id.scoreBtn);
         scoreCnt = 0;
         database = ScoreListDatabase.getInstance(this);
         scoreListDAO = database.scoreListDAO();
@@ -61,7 +61,7 @@ public class MainActivity2 extends AppCompatActivity {
         leftNum.setText(String.valueOf(current.getLeftValue()));
         rightNum.setText(String.valueOf(current.getRightValue()));
 
-        bigger.setOnClickListener(new View.OnClickListener() {
+        biggerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if ('>' == current.getCorrectAnswer()) {
@@ -78,7 +78,7 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
 
-        smaller.setOnClickListener(new View.OnClickListener() {
+        smallerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if ('<' == current.getCorrectAnswer()) {
@@ -94,7 +94,7 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
 
-        equal.setOnClickListener(new View.OnClickListener() {
+        equalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if ('=' == current.getCorrectAnswer()) {
@@ -110,8 +110,7 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
 
-
-        score.setOnClickListener(new View.OnClickListener() {
+        scoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String user = sharedPref.getString("user", "");

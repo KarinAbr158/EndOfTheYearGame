@@ -24,4 +24,7 @@ public interface ScoreListDAO {
 
     @Query("SELECT * FROM scores WHERE id = :id")
     ScoreList getScoreByID(int id);
+
+    @Query("SELECT * FROM scores ORDER BY score DESC")
+    List<ScoreList> getAllScoresSorted();
 }

@@ -10,6 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -37,14 +38,22 @@ public class MainActivity3 extends AppCompatActivity {
 
         // Run DB query on a background thread
         Executors.newSingleThreadExecutor().execute(() -> {
-            List<ScoreList> scores = scoreListDAO.getAllScores();  // Run off main thread
+            List<ScoreList> scores = scoreListDAO.getAllScoresSorted();
 
-            // Update UI on the main thread
+            List<String> scoreStrings = new ArrayList<>();
+            for (ScoreList score : scores) {
+                scoreStrings.add(score.getUsername() + " - " + score.getScore() + "%");
+            }
+
+            // Update UI on main thread
             runOnUiThread(() -> {
-                ArrayAdapter<ScoreList> adapter = new ArrayAdapter<>(
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
                         MainActivity3.this,
-                        android.R.layout.simple_list_item_1,
-                        scores
+                        R.layout.listview_layout_file,
+                        R.id.usernameTextView,
+                        R.id.motivation,
+                        R.id.usernameTextView,
+                        scoreStrings
                 );
                 listView.setAdapter(adapter);
             });
