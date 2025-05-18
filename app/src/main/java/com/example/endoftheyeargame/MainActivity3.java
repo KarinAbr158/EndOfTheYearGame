@@ -40,21 +40,9 @@ public class MainActivity3 extends AppCompatActivity {
         Executors.newSingleThreadExecutor().execute(() -> {
             List<ScoreList> scores = scoreListDAO.getAllScoresSorted();
 
-            List<String> scoreStrings = new ArrayList<>();
-            for (ScoreList score : scores) {
-                scoreStrings.add(score.getUsername() + " - " + score.getScore() + "%");
-            }
-
             // Update UI on main thread
             runOnUiThread(() -> {
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                        MainActivity3.this,
-                        R.layout.listview_layout_file,
-                        R.id.usernameTextView,
-                        R.id.motivation,
-                        R.id.usernameTextView,
-                        scoreStrings
-                );
+                ScoreListAdapter adapter = new ScoreListAdapter(this, scores);
                 listView.setAdapter(adapter);
             });
         });
