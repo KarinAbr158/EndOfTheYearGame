@@ -1,7 +1,9 @@
 package com.example.endoftheyeargame;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -10,7 +12,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -19,7 +20,7 @@ public class MainActivity3 extends AppCompatActivity {
     ListView listView;
     ScoreListDatabase database;
     ScoreListDAO scoreListDAO;
-
+    Button goBackBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,11 +32,10 @@ public class MainActivity3 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         listView = findViewById(R.id.listView);
         database = ScoreListDatabase.getInstance(this);
         scoreListDAO = database.scoreListDAO();
-
+        goBackBtn = findViewById(R.id.returnBackToGameBtn);
         // Run DB query on a background thread
         Executors.newSingleThreadExecutor().execute(() -> {
             List<ScoreList> scores = scoreListDAO.getAllScoresSorted();
@@ -45,6 +45,13 @@ public class MainActivity3 extends AppCompatActivity {
                 ScoreListAdapter adapter = new ScoreListAdapter(this, scores);
                 listView.setAdapter(adapter);
             });
+        });
+
+        goBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
         });
     }
 }

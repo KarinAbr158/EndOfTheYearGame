@@ -28,6 +28,7 @@ public class MainActivity2 extends AppCompatActivity {
     ScoreListDatabase database;
     ScoreListDAO scoreListDAO;
     Question current;
+    SharedPreferences sharedPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +51,7 @@ public class MainActivity2 extends AppCompatActivity {
         database = ScoreListDatabase.getInstance(this);
         scoreListDAO = database.scoreListDAO();
 
-        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        sharedPref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         String welcome = sharedPref.getString("user","");
         tv.setText(String.format("Hello %s", welcome));
 
